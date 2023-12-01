@@ -88,5 +88,15 @@ router.post("/auth/getstream", async (req, res) => {
     return res.json({ token: userToken });
   }
 });
+router.post(
+  "/visited-users",
+  userController.visitedUsers
+);
+router.get("/user_details/:id", userController.userdetail);
+router.get("/recentusers", userController.recentUsers);
+router.put("/remove_friend/:id/:friendId", userController.removeFriend);
+router.put("/send_request/:id/:friendId", userController.sendFriendRequest);
+router.put("/cancel_request/:id/:friendId", userController.cancelFriendRequest);
+router.put("/accept_req/:id/:friendId", userController.accept_req);
 
 module.exports = router;
