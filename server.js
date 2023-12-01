@@ -21,6 +21,7 @@ var corsOptions = {
   origin: [
     "http://localhost:3000",
     "http://localhost:3001",
+    "http://localhost:3002",
     "https://hot-date.vercel.app",
     "https://swinxter-v2.vercel.app/"
   ],
