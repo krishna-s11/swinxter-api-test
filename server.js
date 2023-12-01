@@ -22,10 +22,11 @@ var corsOptions = {
     "http://localhost:3000",
     "http://localhost:3001",
     "https://hot-date.vercel.app",
-    "https://frontend-till-4t-m.vercel.app"
+    "https://swinxter-v2.vercel.app"
   ],
   credentials: true,
 };
+//added
 
 app.use(cors(corsOptions));
 app.use(cookieParser());
