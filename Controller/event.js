@@ -1,3 +1,4 @@
+const replyModel = require("../Model/reply")
 const eventModel = require("../Model/event");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const Mailsend = require("../helper/mail");
@@ -360,4 +361,51 @@ module.exports = {
       return next();
     }
   },
+  async postComments(req,res){
+
+    const eventId = req.body.eventId;
+    const data = {
+      username: req.body.username,
+      userPhoto: req.body.userPhoto,
+      comment: req.body.comment,
+      userId: req.body.userId
+    }
+    try{
+      await eventModel.findOneAndUpdate({
+        _id: eventId
+      },{
+        $push: {
+          comments: data
+        }
+      })
+      res.status(200).send("Comment added");
+    }
+    catch(e){
+      res.status(403).send("Encountered some error", e);
+      console.log(e);
+    }
+  },
+  async postReply(req,res){
+    const eventId = req.body.eventId;
+    const data = {
+      userId: req.body.userId,
+      reply: req.body.reply,
+      replyPhoto: req.body.replyPhoto,
+      replyName: req.body.replyName,
+    }
+    try{
+      await eventModel.findOneAndUpdate({
+        _id: eventId
+      },{
+        $push: {
+          replies: data
+        }
+      })
+      res.status(200).send("Comment added");
+    }
+    catch(e){
+      res.status(403).send("Encountered some error", e);
+      console.log(e);
+    }
+  }
 };

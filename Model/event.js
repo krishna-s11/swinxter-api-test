@@ -34,8 +34,26 @@ const eventSchema = new mongoose.Schema({
 
   isPromoted: { type: Boolean, default: false },
   isverify: { type: Boolean, default: false },
+  comments: [
+    {
+      username: String,
+      userPhoto: String,
+      comment: String,
+      userId: String,
+    }
+  ],
+  replies: [
+    {
+      userId: String,
+      reply: String,
+      replyPhoto: String,
+      replyName: String,
+    }
+  ]
 });
 
+
 const event = mongoose.model("event", eventSchema);
+
 
 module.exports = event;

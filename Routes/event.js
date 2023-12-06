@@ -47,5 +47,13 @@ router.post(
   verifyToken,
   eventController.updateParticipantStatus,
 );
+router.post(
+  "/events/comment",
+  eventController.postComments
+);
+router.post(
+  "/events/reply",
+  eventController.postReply
+);
 
 module.exports = router;
