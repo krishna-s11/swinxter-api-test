@@ -10,11 +10,11 @@ const {
 } = require("../helper/mail_html");
 const mongoose = require("mongoose");
 const SECRET_KEY = process.env.JWT_SECRETKEY;
+const StreamChat = require('stream-chat').StreamChat
 
 module.exports = {
   async signup(req, res) {
     const { email, password, username, profile_type, logintype } = req.body;
-    console.log("dsfj");
     if (!logintype) {
       try {
         if (!profile_type || !email || !username) {
@@ -122,6 +122,7 @@ module.exports = {
   },
   async login(req, res) {
     const { email, password } = req.body;
+    const serverClient = StreamChat.getInstance(process.env.STREAM_API_KEY,process.env.STREAM_API_SECRET);
     try {
       if (!email || !password) {
         return res.status(400).send("Please Provide Required Information");
@@ -144,6 +145,9 @@ module.exports = {
             expiresIn: "10d",
           },
         );
+        const stream_id = exist._id.toString();
+        const stream_token = serverClient.createToken(stream_id);
+        exist.stream_token = stream_token;
         exist.isLogged = true;
         await exist.save();
         const options = {
@@ -152,7 +156,6 @@ module.exports = {
           sameSite: "none",
           secure: true,
         };
-
         return res
           .status(200)
           .cookie("token", token, options)
@@ -164,6 +167,7 @@ module.exports = {
   },
   async login4(req, res) {
     const { email, password } = req.body;
+    const serverClient = StreamChat.getInstance(process.env.STREAM_API_KEY,process.env.STREAM_API_SECRET);
     try {
       if (!email || !password) {
         return res.status(400).send("Please Provide Required Information");
@@ -186,6 +190,9 @@ module.exports = {
             expiresIn: "365d",
           },
         );
+        const stream_id = exist._id.toString();
+        const stream_token = serverClient.createToken(stream_id);
+        exist.stream_token = stream_token;
         exist.isLogged = true;
         await exist.save();
         const options = {

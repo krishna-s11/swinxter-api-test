@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema(
     },
     marital_status: { type: String },
     slogan: { type: String },
-
+    stream_token: {type:String},
     speaks: { type: String },
     race: { type: String },
     distance: { type: String },
