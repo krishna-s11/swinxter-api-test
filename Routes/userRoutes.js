@@ -93,7 +93,8 @@ router.post(
   userController.visitedUsers
 );
 router.get("/user_details/:id", userController.userdetail);
-router.get("/recentusers", userController.recentUsers);
+router.get("/recentusers", userController.RecentUsers);
+router.get("/users", userController.allUsers);
 router.put("/remove_friend/:id/:friendId", userController.removeFriend);
 router.put("/send_request/:id/:friendId", userController.sendFriendRequest);
 router.put("/cancel_request/:id/:friendId", userController.cancelFriendRequest);

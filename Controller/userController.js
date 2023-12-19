@@ -990,23 +990,6 @@ module.exports = {
       console.log(e);
     }
   },
-  async sentFriendRequest(req, res, next) {
-    const { id } = req.params;
-    const { friendId} = req.params;
-    console.log("ids",id,friendId);
-    // try{
-    //   const send_data = await userModel.findById({_id: id});
-    //   send_data.sent_requests.push(friendId);
-    //   await send_data.save();
-    //   const recieved_req = await userModel.findById({_id: friendId});
-    //   recieved_req.friend_requests.push(id);
-    //   await recieved_req.save();
-    //   res.status(200).send("Friend request sent succesfully");
-    // }catch(e) {
-    //   res.status(400).send(e);
-    //   console.log(e);
-    // }
-  },
   async cancelFriendRequest(req, res, next) {
     const { id } = req.params;
     const { friendId} = req.params;
@@ -1040,7 +1023,7 @@ module.exports = {
       console.log(e);
     }
   },
-  async recentUsers(req,res,next){
+  async allUsers(req,res){
     let users = [];
     try{
       const data = await userModel.find();

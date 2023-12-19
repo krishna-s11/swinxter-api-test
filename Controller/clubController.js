@@ -323,6 +323,30 @@ module.exports = {
       return res.status(500).send(e);
     }
   },
+  async postComments(req,res){
+    const clubId = req.body.productId;
+    const data = {
+      username: req.body.username,
+      userPhoto: req.body.userPhoto,
+      comment: req.body.comment,
+      rating: req.body.rating,
+      userId: req.body.userId,
+    }
+    try{
+      await clubModel.findOneAndUpdate({
+        _id: clubId
+      },{
+        $push: {
+          comments: data
+        }
+      })
+      res.status(200).send("Comment added");
+    }
+    catch(e){
+      res.status(403).send("Encountered some error", e);
+      console.log(e);
+    }
+  },
 
 }
 // const PAYTM_MERCHANT_KEY = 'your_merchant_key';

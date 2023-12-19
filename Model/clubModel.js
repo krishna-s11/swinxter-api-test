@@ -29,6 +29,15 @@ const ClubSchema = new mongoose.Schema(
         type: String,
       },
     ],
+    comments: [
+      {
+        username: String,
+        userPhoto: String,
+        comment: String,
+        rating: String,
+        userId: String,
+      }
+    ],
     clubtype: {
       type: String,
       enum: ["Private Place", "Public Place", "Virtual date"],

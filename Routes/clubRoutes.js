@@ -32,5 +32,6 @@ router.put(
 router.get("/search_club", club.search_club);
 router.get("/getClub/:id", club.getClub);
 router.put("/bookingClub/:cludId", club.bookingClub);
+router.post("/clubs/comment", club.postComments);
 
 module.exports = router;
