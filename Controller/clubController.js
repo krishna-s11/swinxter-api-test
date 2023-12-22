@@ -325,6 +325,7 @@ module.exports = {
   },
   async postComments(req,res){
     const clubId = req.body.productId;
+    const timestamp = Date.now();
     const data = {
       username: req.body.username,
       userPhoto: req.body.userPhoto,
@@ -343,11 +344,26 @@ module.exports = {
       res.status(200).send("Comment added");
     }
     catch(e){
-      res.status(403).send("Encountered some error", e);
+      res.status(403).send("Encountered some error");
       console.log(e);
     }
   },
-
+  async deleteComments(req,res){
+    const id = req.body.id;
+    const clubId = req.body.productId;
+    console.log(id, clubId);
+    try{
+      const data = await clubModel.findById({_id: clubId});
+      console.log(data);
+      const index = data.comments.findIndex(a => a._id.toString() === id);
+      index !== -1 && data.comments.splice(index,1);
+      await data.save();
+      res.status(200).send("Deleted Successfully");
+    }catch(e){
+      res.status(403).send("Encountered some error");
+      console.log(e);
+    }
+  }
 }
 // const PAYTM_MERCHANT_KEY = 'your_merchant_key';
 // const PAYTM_MID = 'your_merchant_id';

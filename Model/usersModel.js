@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema(
     friends: {type: Array},
     sent_requests: {type: Array},
     friend_requests: {type: Array},
+    blocked_users: {type: Array},
     relocate: { type: Boolean, default: false },
     introduction: { type: String },
     image: { type: String, default: "" },

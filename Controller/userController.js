@@ -243,7 +243,7 @@ module.exports = {
   async RecentUsers(req, res) {
     try {
       const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 90);
 
       const recentUsers = await userModel
         .find({ createdAt: { $gte: thirtyDaysAgo } })
@@ -967,6 +967,9 @@ module.exports = {
       data.friends.splice(index,1);
       console.log(data.friends);
       await data.save();
+      const friend = await userModel.findById({_id: friendId});
+      const frdIndex = friend.friends.indexOf(id);
+      friend.friends.splice(frdIndex,1);
       res.status(200).send("Friend removed succesfully");
     }catch(e) {
       res.status(400).send(e);
@@ -996,11 +999,11 @@ module.exports = {
     try{
       const send_data = await userModel.findById({_id: id});
       const send_index = send_data.sent_requests.indexOf(friendId);
-      send_data.sent_requests.splice(send_index);
+      send_data.sent_requests.splice(send_index,1);
       await send_data.save();
       const recieved_req = await userModel.findById({_id: friendId});
       const rcvd_index = recieved_req.friend_requests.indexOf(id);
-      recieved_req.friend_requests.splice(rcvd_index);
+      recieved_req.friend_requests.splice(rcvd_index,1);
       await recieved_req.save();
       res.status(200).send("Friend request cancelled succesfully");
     }catch(e) {
@@ -1013,10 +1016,15 @@ module.exports = {
     const { friendId} = req.params;
     try{
       const data = await userModel.findById({_id: id});
-      const index = data.sent_requests.indexOf(friendId);
-      data.friend_requests.splice(index);
+      const index = data.friend_requests.indexOf(friendId);
+      data.friend_requests.splice(index,1);
       data.friends.push(friendId);
       await data.save();
+      const friend = await userModel.findById({_id: friendId});
+      const friendIndex = data.sent_requests.indexOf(id);
+      friend.sent_requests.splice(friendIndex,1);
+      friend.friends.push(id);
+      await friend.save();
       res.status(200).send("Friend Added succesfully");
     }catch(e) {
       res.status(400).send(e);

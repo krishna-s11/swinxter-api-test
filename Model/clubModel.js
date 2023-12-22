@@ -36,6 +36,7 @@ const ClubSchema = new mongoose.Schema(
         comment: String,
         rating: String,
         userId: String,
+        timestamp: {type: Date, default: Date.now()},
       }
     ],
     clubtype: {
