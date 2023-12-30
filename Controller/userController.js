@@ -11,6 +11,7 @@ const {
 const mongoose = require("mongoose");
 const SECRET_KEY = process.env.JWT_SECRETKEY;
 const StreamChat = require('stream-chat').StreamChat
+const { generateToken04  } = require('../zego_server/zegoServerAssistant');
 
 module.exports = {
   async signup(req, res) {
@@ -1035,6 +1036,39 @@ module.exports = {
     let users = [];
     try{
       const data = await userModel.find();
+      if(!data){
+        return res.status(400).send("something went wrong");
+      }
+      else{
+        return res.status(200).send(data);
+      }
+    }
+    catch(e){
+      console.log(e);
+      return res.status(500).send(e);
+    }
+  },
+  async zegoToken(req,res){
+    try{
+      const appID = 1687841660;
+      const secret = '35d453a8fa7e6f2517e85283e7e82848';
+      const userId = req.query.userID; 
+      const effectiveTimeInSeconds = Number(req.query.expired_ts); 
+      const payload = '';
+      const token =  generateToken04 (appID, userId, secret, effectiveTimeInSeconds, payload);
+      res.status(200).send(token);
+    }catch(e){
+      console.log(e);
+      return res.status(500).send(e);
+    }
+  },
+  async blockUser(req,res){
+    const userId = req.body.userId;
+    const blockId = req.body.blockId;
+    try{
+      const data = await userModel.findById({_id: userId});
+      data.blocked_users.push(blockId);
+      data.save();
       if(!data){
         return res.status(400).send("something went wrong");
       }

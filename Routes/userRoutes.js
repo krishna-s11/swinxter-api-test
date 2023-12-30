@@ -92,6 +92,7 @@ router.post(
   "/visited-users",
   userController.visitedUsers
 );
+router.get("/zego_token", userController.zegoToken);
 router.get("/user_details/:id", userController.userdetail);
 router.get("/recentusers", userController.RecentUsers);
 router.get("/users", userController.allUsers);
@@ -99,5 +100,6 @@ router.put("/remove_friend/:id/:friendId", userController.removeFriend);
 router.put("/send_request/:id/:friendId", userController.sendFriendRequest);
 router.put("/cancel_request/:id/:friendId", userController.cancelFriendRequest);
 router.put("/accept_req/:id/:friendId", userController.accept_req);
+router.post("/blockuser", userController.blockUser);
 
 module.exports = router;
