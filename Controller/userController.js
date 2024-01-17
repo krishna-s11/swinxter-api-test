@@ -244,7 +244,7 @@ module.exports = {
   async RecentUsers(req, res) {
     try {
       const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 90);
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
       const recentUsers = await userModel
         .find({ createdAt: { $gte: thirtyDaysAgo } })
@@ -320,6 +320,11 @@ module.exports = {
         },
         { new: true },
       );
+      if(image.length > 0){
+        const user = await userModel.findById({_id: exist._id});
+        user.mymedia.push(image);
+        user.save();
+      }
       console.log(data);
       if (!data) {
         return res.status(400).send("Failed to Upload Image");
@@ -1068,13 +1073,61 @@ module.exports = {
     try{
       const data = await userModel.findById({_id: userId});
       data.blocked_users.push(blockId);
+      const blockUserInFriend = data.friends.indexOf(blockId);
+      if(blockUserInFriend !== null){
+        data.friends.splice(blockUserInFriend,1);
+      }
       data.save();
+      const blockedUser = await userModel.findById({_id: blockId});
+      blockedUser.blockedby.push(userId);
+      const userInFriend = blockedUser.friends.indexOf(userId);
+      if(userInFriend !== null){
+        blockedUser.friends.splice(userInFriend,1);
+      }
+      blockedUser.save();
       if(!data){
         return res.status(400).send("something went wrong");
       }
       else{
         return res.status(200).send(data);
       }
+    }
+    catch(e){
+      console.log(e);
+      return res.status(500).send(e);
+    }
+  },
+  async unblockUser(req,res){
+    const userId = req.body.userId;
+    const blockId = req.body.blockId;
+    try{
+      const user = await userModel.findById({_id: userId});
+      const blockedUserIdIndex = user.blocked_users.indexOf(blockId);
+      user.blocked_users.splice(blockedUserIdIndex,1);
+      user.save();
+      const blockedUser = await userModel.findById({_id: blockId});
+      const userIdIndex = user.blockedby.indexOf(userId);
+      blockedUser.blockedby.splice(userIdIndex,1);
+      blockedUser.save();
+      return res.status(200).send("successfully unblocked");
+    }
+    catch(e){
+      console.log(e);
+      return res.status(500).send(e);
+    }
+  },
+  async superlike(req,res){
+    const userId = req.body.userId;
+    const superlikeId = req.body.superlikeId;
+    const cooldown = req.body.cooldown;
+    try{
+      const user = await userModel.findById({_id: userId});
+      user.superlike.sent.push({userId: superlikeId, cooldown: cooldown});
+      user.save();
+      const superlike = await userModel.findById({_id: superlikeId});
+      superlike.superlike.recieved.push(userId);
+      superlike.save();
+      return res.status(200).send("successfully superliked");
     }
     catch(e){
       console.log(e);

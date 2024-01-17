@@ -101,5 +101,7 @@ router.put("/send_request/:id/:friendId", userController.sendFriendRequest);
 router.put("/cancel_request/:id/:friendId", userController.cancelFriendRequest);
 router.put("/accept_req/:id/:friendId", userController.accept_req);
 router.post("/blockuser", userController.blockUser);
+router.post("/unblockuser", userController.unblockUser);
+router.post("/superlike", userController.superlike);
 
 module.exports = router;

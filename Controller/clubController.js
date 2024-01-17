@@ -42,7 +42,6 @@ module.exports = {
           image.push(`${process.env.Backend_URL_Image}${images.filename}`);
         }
       }
-      console.log(req.body);
       // Check if videos were uploaded
       if (req.files["video"]) {
         for (const videos of req.files["video"]) {
@@ -159,7 +158,6 @@ module.exports = {
       }
 
       const t2 = JSON.parse(location);
-      console.log("hi");
       const data = await clubModel.findByIdAndUpdate(
         { _id: exist._id },
         {
@@ -325,7 +323,6 @@ module.exports = {
   },
   async postComments(req,res){
     const clubId = req.body.productId;
-    const timestamp = Date.now();
     const data = {
       username: req.body.username,
       userPhoto: req.body.userPhoto,
@@ -351,7 +348,7 @@ module.exports = {
   async deleteComments(req,res){
     const id = req.body.id;
     const clubId = req.body.productId;
-    console.log(id, clubId);
+
     try{
       const data = await clubModel.findById({_id: clubId});
       console.log(data);
