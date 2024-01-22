@@ -202,7 +202,7 @@ const change_passMail = (title, name, text) => {
          </div>
          `;
 };
-const payment_reminder = (title, name, text) => {
+const payment_reminder = (name) => {
   return `<!DOCTYPE html>
   <html lang="en">
   <head>
@@ -282,7 +282,7 @@ const payment_reminder = (title, name, text) => {
       </div>
          `;
 };
-const welcome_user = () => {
+const welcome_user = (name) => {
   return `<!DOCTYPE html>
   <html lang="en">
   <head>
@@ -340,49 +340,66 @@ const welcome_user = () => {
      </div>
      <div class="content">
          <h2 style="text-align: center">Welcome to Swinxter</h2><p style="margin-top: -15px; color: #999; text-align: center; margin-bottom: 20px">Best adult dating site.</p>
-         <p>Please enjoy your FREE trial-membership for 3 weeks and explore our website for all its features.</p>
-         <p>If you wish to upgrade your account and become a full member, please visit the Membership page from the left menu. Receive a special discount when you upgrade to a full membership.</p>
-         <p>Please come back as often as you like.</p>
-         <p>Have fun,<br><b>The Swinxter Team</b></p>
+         <p>Dear ${name},
+         <p>We are thrilled to have you on board, and we hope you're as excited as we are to explore the fantastic features and benefits that await you.</p>
+         <p>Please enjoy your 3-week FREE trial membership and explore our website's features. After the trial period, your chosen membership will activate automatically, providing uninterrupted access to our premium features</p>
+         <p>Your chosen membership details: </p>
+         <ul>
+             <li><b>Membership Plan:</b> 1-month membership package</li>
+             <li><b>Renewal Date:</b> 21 Feb, 2024</li>
+             <li><b>Renewal Amount:</b> $24.99</li>
+         </ul>
+         <p>To give you a quick overview, here are the membership plans we offer mentioned below:</p>
      </div>
-     <div style="margin-top: 30px; width: 100%; background-color:#000; color: #fff; padding: 20px 0;">
+     <div style="width: 100%; background-color:#000; color: #fff;padding: 20px 0">
        <h2 style="text-align: center">Membership Plans</h2> 
        <p style="text-align:center">Check out all our membership plans available.</p>
        <div style="margin-top: 30px; display: flex; justify-content: space-between; padding: 0 20px; margin-bottom: 20px">
-         <div style="background-color: #2A2D37; border-radius: 10px; padding: 10px; text-align:center; margin-right: 20px">
+         <div style="background-color: #2A2D37; border-radius: 10px; padding: 10px; text-align:center; margin-right: 40px; margin-left: 40px">
            <p>3 Day Package</p>
            <h1 style="color: orange">Free</h1>
            <p>All services included</p>
          </div>
-         <div style="background-color: #2A2D37; border-radius: 10px; padding: 10px; text-align:center; margin-right: 20px">
+         <div style="background-color: #2A2D37; border-radius: 10px; padding: 10px; text-align:center; margin-right: 40px">
            <p>1 Week Package</p>
            <h1 style="color: orange">$14.99</h1>
            <p>All services included</p>
          </div>
-         <div style="background-color: #2A2D37; border-radius: 10px; padding: 10px; text-align:center; margin-right: 20px">
+         <div style="background-color: #2A2D37; border-radius: 10px; padding: 10px; text-align:center; margin-right: 40px">
            <p>1 Month Package</p>
            <h1 style="color: orange">$24.99</h1>
            <p>All services included</p>
          </div>
          </div>
         <div style="margin-top: 30px; display: flex; justify-content: space-between; padding: 0 20px; margin-bottom: 20px">
-         <div style="background-color: #2A2D37; border-radius: 10px; padding: 10px; text-align:center; margin-top: 20px; margin-right: 20px">
+         <div style="background-color: #2A2D37; border-radius: 10px; padding: 10px; text-align:center; margin-top: 20px; margin-right: 40px; margin-left: 40px">
            <p>3 Month Package</p>
            <h1 style="color: orange">$46.99</h1>
            <p>All services included</p>
          </div>
-         <div style="background-color: #2A2D37; border-radius: 10px; padding: 10px; text-align:center; margin-top: 20px; margin-right: 20px">
+         <div style="background-color: #2A2D37; border-radius: 10px; padding: 10px; text-align:center; margin-top: 20px; margin-right: 40px">
            <p>6 Month Package</p>
            <h1 style="color: orange">$77.99</h1>
            <p>All services included</p>
          </div>
-         <div style="background-color: #2A2D37; border-radius: 10px; padding: 10px; text-align:center; margin-top: 20px; margin-right: 20px">
+         <div style="background-color: #2A2D37; border-radius: 10px; padding: 10px; text-align:center; margin-top: 20px; margin-right: 40px">
            <p>3 Month Package</p>
            <h1 style="color: orange">$119.99</h1>
            <p>All services included</p>
          </div>
         </div>
        </div>
+    <div class="content">
+         <p>What you need to know: </p>
+         <ol>
+             <li>Your membershiip will renew automatically on the specified renewal date.</li>
+             <li>We will charge the renewal amount to the payment method we have on file.</li>
+             <li>You will receive a detailed invoice for the renewal transaction by email.</li>
+             <li>You can manage your account settings on our website or contact our support team if you have any questions.</li>
+         </ol>
+         <p>Thank you for choosing <a href="https://swinxter-v2.vercel.app/">Swinxter.com</a>. We value your continued support and look forward to serving you for another membership cycle.</p>
+         <p>Have fun,<br><b>The Swinxter Team</b></p>
+     </div>
      <div style="padding: 20px; background-color: #eee">
        <h3>Contact Us:</h3>
        <p>To talk to us, drop an email to help@swinxter.com</p>

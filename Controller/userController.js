@@ -730,7 +730,7 @@ module.exports = {
       if (!data) {
         return res.status(400).send("something went wrong");
       } else {
-        let html = welcome_user();
+        let html = welcome_user(exist.username);
         let mailOptions = {
           from: process.env.Nodemailer_id,
           to: exist.email,
