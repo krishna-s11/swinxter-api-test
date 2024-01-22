@@ -7,6 +7,7 @@ const {
   mailHtml,
   forgetMail,
   change_passMail,
+  welcome_user,
 } = require("../helper/mail_html");
 const mongoose = require("mongoose");
 const SECRET_KEY = process.env.JWT_SECRETKEY;
@@ -729,7 +730,16 @@ module.exports = {
       if (!data) {
         return res.status(400).send("something went wrong");
       } else {
-        return res.status(200).send("user verify successfully");
+        res.status(200).send("user verify successfully");
+        let html = welcome_user();
+        let mailOptions = {
+          from: process.env.Nodemailer_id,
+          to: exist.email,
+          subject: title,
+          html: html,
+        };
+        Mailsend(req, res, mailOptions);
+        return;
       }
     } catch (e) {
       console.log(e);
