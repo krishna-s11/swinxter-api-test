@@ -383,7 +383,7 @@ const welcome_user = (name) => {
            <p>All services included</p>
          </div>
          <div style="background-color: #2A2D37; border-radius: 10px; padding: 10px; text-align:center; margin-top: 20px; margin-right: 40px">
-           <p>3 Month Package</p>
+           <p>9 Month Package</p>
            <h1 style="color: orange">$119.99</h1>
            <p>All services included</p>
          </div>
