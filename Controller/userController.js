@@ -730,7 +730,6 @@ module.exports = {
       if (!data) {
         return res.status(400).send("something went wrong");
       } else {
-        res.status(200).send("user verify successfully");
         let html = welcome_user();
         let mailOptions = {
           from: process.env.Nodemailer_id,
@@ -739,7 +738,7 @@ module.exports = {
           html: html,
         };
         Mailsend(req, res, mailOptions);
-        return;
+        return res.status(200).send("user verify successfully");
       }
     } catch (e) {
       console.log(e);
