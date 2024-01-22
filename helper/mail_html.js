@@ -339,11 +339,14 @@ const welcome_user = (name) => {
          <h1>Swinxter Inc.</h1>
      </div>
      <div class="content">
-         <h2 style="text-align: center">Welcome to Swinxter</h2><p style="margin-top: -15px; color: #999; text-align: center; margin-bottom: 20px">Best adult dating site.</p>
+        <div style="line-height: 0.4">
+            <h1 style="text-align: center; font-size: 38px">Welcome to Swinxter</h1>
+            <p style="color: #999; text-align: center; margin-bottom: 20px">Best adult dating site.</p>
+        </div>
          <p>Dear ${name},
          <p>We are thrilled to have you on board, and we hope you're as excited as we are to explore the fantastic features and benefits that await you.</p>
          <p>Please enjoy your 3-week FREE trial membership and explore our website's features. After the trial period, your chosen membership will activate automatically, providing uninterrupted access to our premium features</p>
-         <p>Your chosen membership details: </p>
+         <p><b>Your chosen membership details:</b></p>
          <ul>
              <li><b>Membership Plan:</b> 1-month membership package</li>
              <li><b>Renewal Date:</b> 21 Feb, 2024</li>
@@ -390,7 +393,7 @@ const welcome_user = (name) => {
         </div>
        </div>
     <div class="content">
-         <p>What you need to know: </p>
+         <p><b>What you need to know:</b></p>
          <ol>
              <li>Your membershiip will renew automatically on the specified renewal date.</li>
              <li>We will charge the renewal amount to the payment method we have on file.</li>
