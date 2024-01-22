@@ -734,7 +734,7 @@ module.exports = {
         let mailOptions = {
           from: process.env.Nodemailer_id,
           to: exist.email,
-          subject: title,
+          subject: "Welcome to Swinxter.com",
           html: html,
         };
         Mailsend(req, res, mailOptions);
