@@ -103,5 +103,10 @@ router.put("/accept_req/:id/:friendId", userController.accept_req);
 router.post("/blockuser", userController.blockUser);
 router.post("/unblockuser", userController.unblockUser);
 router.post("/superlike", userController.superlike);
+router.post("/notifications", userController.sendNotification);
+router.get("/notifications/:userId", userController.getNotifications);
+
+
+router.post("/send_dummy_emails", userController.sendDummyEmails);
 
 module.exports = router;

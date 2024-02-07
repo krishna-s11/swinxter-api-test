@@ -190,7 +190,7 @@ module.exports = {
           select: "image",
         },
       });
-      console.log(get);
+      // console.log(get);
       if (q) {
         let data = await clubModel.find({
           $or: [

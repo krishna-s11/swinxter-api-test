@@ -417,5 +417,6 @@ module.exports = {
   mailHtml,
   forgetMail,
   change_passMail,
-  welcome_user
+  welcome_user,
+  payment_reminder
 };

@@ -1,3 +1,4 @@
+const notificationModel = require("../Model/notificationModel");
 const userModel = require("../Model/usersModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -8,8 +9,10 @@ const {
   forgetMail,
   change_passMail,
   welcome_user,
+  payment_reminder,
 } = require("../helper/mail_html");
 const mongoose = require("mongoose");
+const stream = require('getstream')
 const SECRET_KEY = process.env.JWT_SECRETKEY;
 const StreamChat = require('stream-chat').StreamChat
 const { generateToken04  } = require('../zego_server/zegoServerAssistant');
@@ -428,6 +431,10 @@ module.exports = {
         { token: null, isLogged: false },
         { new: true },
       );
+      const user = await userModel.findById(req.params.id);
+      let notificationCount = user.notifications.length;
+      user.lastNotificationCount = notificationCount;
+      user.save();
       if (!data) {
         return res.status(404).send({ message: "User not found" });
       }
@@ -575,7 +582,7 @@ module.exports = {
           " Your password is changed successfully please login with your newly created credentials",
         );
         let mailOptions = {
-          from: process.env.Nodemailer_id,
+          from: {name: "Swinxter.com", address: process.env.Nodemailer_id},
           to: get_pass.email,
           subject: title,
           html: html,
@@ -994,17 +1001,22 @@ module.exports = {
   async sendFriendRequest(req, res, next) {
     const { id } = req.params;
     const { friendId} = req.params;
-    console.log(id,friendId);
     try{
-      const send_data = await userModel.findById({_id: id});
-      send_data.sent_requests.push(friendId);
-      await send_data.save();
-      const recieved_req = await userModel.findById({_id: friendId});
-      recieved_req.friend_requests.push(id);
-      await recieved_req.save();
+      const client = stream.connect('hxd9x3ag7hx3','nsaenxuen47at36dy265w2kbm7g8bqndtsqay78hpmcdxy5zaukm5hrh4rmbuba3','1275149');
+      const friend = client.feed('notification',`${friendId}`);
+      const activityData = {'actor': 'monarch', 'verb': 'friend request', 'object': 'monarch has sent you a friend request', 'time': Date.now()}
+      const activityResponse = await friend.addActivity(activityData);
+      console.log(activityResponse);
+      // console.log(id,friendId);
+      // const send_data = await userModel.findById({_id: id});
+      // send_data.sent_requests.push(friendId);
+      // await send_data.save();
+      // const recieved_req = await userModel.findById({_id: friendId});
+      // recieved_req.friend_requests.push(id);
+      // await recieved_req.save();
       res.status(200).send("Friend request sent succesfully");
     }catch(e) {
-      res.status(400).send(e);
+      res.status(400).send(e.message);
       console.log(e);
     }
   },
@@ -1142,6 +1154,74 @@ module.exports = {
       console.log(e);
       return res.status(500).send(e);
     }
+  },
+  async sendNotification(req,res){
+    const {senderId, recieverId, senderName, recieverName, type, message} = req.body;
+    try{
+      const notification = await notificationModel.create({
+        senderId,
+        recieverId,
+        senderName,
+        recieverName,
+        type,
+        message
+      });
+      let ObjId = new mongoose.Types.ObjectId(notification.id);
+      console.log(notification,ObjId);
+      const user = await userModel.findById({_id: recieverId});
+      user.notifications.push(ObjId);
+      user.save();
+      // await user.updateOne({_id:recieverId}, {
+      //   $push:{notifications: ObjId}
+      // });
+    return res.status(200).send("Notification sent");
+    }
+    catch(e){
+      console.log(e);
+      return res.status(500).send(e.message || e);
+    }
+  },
+  async getNotifications(req,res){
+    try{
+      const user = await userModel
+                  .findOne({_id:req.params.userId})
+                  .populate({path: "notifications", model: "notifications"});
+      res.status(200).send(user.notifications);
+    }catch(e){
+      res.status(404).send(e.message || e);
+    }
+  },
+  async setNotificationCount(req,res){
+    try{
+      const user = await userModel
+                  .findOne({_id:req.params.userId})
+      let notificationCount = user.notifications.length;
+      user.lastNotificationCount = notificationCount;
+      user.save();
+      res.status(200).send("Notification count set");
+    }catch(e){
+      res.status(404).send(e.message || e);
+    }
+  },
+  async sendDummyEmails(req,res) {
+    let html = welcome_user("Member");
+    let mailOptions = {
+      from: {name: "Swinxter.com", address: process.env.Nodemailer_id},
+      to: "nick@revitpay.com",
+      subject: "Welcome to Swinxter",
+      html: html,
+    };
+    Mailsend(req, res, mailOptions);
+
+    let html2 = payment_reminder("Member");
+    let mailOptions2 = {
+      from: {name: "Swinxter.com", address: process.env.Nodemailer_id},
+      to: "nick@revitpay.com",
+      subject: "Payment Reminder",
+      html: html2,
+    };
+    Mailsend(req, res, mailOptions2);
+    return res.status(200).send("Emails sent successfully");
   }
 };
 

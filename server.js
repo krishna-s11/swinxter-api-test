@@ -47,8 +47,54 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-// const socketIo = require('socket.io');
 const server = http.createServer(app);
 server.listen(PORT, () => {
   console.log(`Connected to port ${PORT}`);
+});
+
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+
+let onlineUser = [];
+
+const addUser = (username,userid,socketid) => {
+   !onlineUser.some(user => user.userid === userid) && onlineUser.push({username,userid,socketid});
+}
+
+const removeUser = (socketid) => {
+  onlineUser = onlineUser.filter(user => user.socketid!== socketid);
+}
+
+const getUser = (userid) => {
+  return onlineUser.find(user => user.userid === userid);
+}
+
+io.on("connection", (socket) => {
+  
+  socket.on("newUser", (user) => {
+    addUser(user.username,user.userid,socket.id);
+    console.log(onlineUser);
+  })
+
+  socket.on("sendNotification", ({senderId,senderName,recieverId,recieverName,type,message}) => {
+    const reciever = getUser(recieverId);
+    if(reciever){
+      io.to(reciever.socketid).emit("getNotification", {
+        senderId,
+        senderName,
+        recieverId,
+        recieverName,
+        type,
+        message
+      })
+    }
+  });
+
+  socket.on("disconnect", () => {
+    removeUser(socket.id);
+    console.log("Disconnected from socket.io");
+  });
 });

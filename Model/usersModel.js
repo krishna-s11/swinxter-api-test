@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const {mongoose,Schema} = require("mongoose");
 const UserSchema = new mongoose.Schema(
   {
     profile_type: {
@@ -12,6 +12,8 @@ const UserSchema = new mongoose.Schema(
     username: { type: String, unique: true },
     password: { type: String },
     DOB: { type: String },
+    notifications: [{type: Schema.Types.ObjectId, ref: "notifications"}],
+    lastNotificationCount: {type: Number},
     friends: {type: Array},
     sent_requests: {type: Array},
     friend_requests: {type: Array},
