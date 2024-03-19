@@ -16,6 +16,7 @@ const userroutes = require("./Routes/userRoutes");
 const event = require("./Routes/event");
 const travel = require("./Routes/travel");
 const faq = require("./Routes/faq");
+const adminRoutes = require("./Routes/adminRoutes");
 app.use(express.json());
 var corsOptions = {
   origin: [
@@ -40,6 +41,7 @@ app.use(
   clubroutes,
   faq,
 );
+app.use("/admin",adminRoutes)
 db();
 app.use(express.static(path.join(__dirname)));
 
