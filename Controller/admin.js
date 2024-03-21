@@ -1,8 +1,3 @@
-const userModel = require("../Model/usersModel");
-const clubModel = require("../Model/clubModel");
-const eventModel = require("../Model/event");
-const travelModel = require("../Model/travel");
-// const userModel = require("../Model/adminUserModel");
 const adminUser = require("../Model/adminUserModel");
 
 module.exports = {
