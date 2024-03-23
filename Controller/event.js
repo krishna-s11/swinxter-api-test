@@ -136,6 +136,14 @@ module.exports = {
       return res.status(500).send(e);
     }
   },
+  async get_all_events(req, res){
+   try {
+    const data = await eventModel.find({});
+    return res.status(200).send(data);
+   } catch (error) {
+    return res.status(500).send(error);
+   }
+  },
   async find(req, res) {
     try {
       const { q } = req.query;

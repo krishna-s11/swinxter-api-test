@@ -22,6 +22,7 @@ router.post(
   eventController.createEvent,
 );
 router.get("/events", eventController.find);
+router.get("/allevents", eventController.get_all_events);
 router.get("/get_event/:eventId", eventController.get_event);
 //delete particular event's particepent
 router.post("/delPart", eventController.delPart);
