@@ -1222,7 +1222,15 @@ module.exports = {
     };
     Mailsend(req, res, mailOptions2);
     return res.status(200).send("Emails sent successfully");
-  }
+  },
+  async add_subscription (req,res) {
+    const {name, ccnumber, expmm, expyy, email, userId} = req.body;
+    const existingUser = await User.findById(userId);
+    if(!existingUser){
+      return res.status(404).send("User not found");
+    }
+    
+  },
 };
 
 // const MERCHANT_ID = "YOUR_MERCHANT_ID";
