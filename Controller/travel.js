@@ -156,6 +156,28 @@ module.exports = {
       return res.status(500).send(e);
     }
   },
+  async approve_travel(req,res){
+    try {
+      const { id } = req.params;
+      const { suspend } = req.body;
+      if(suspend){
+        const data = await travelModel.findOneAndUpdate(
+          { _id: id },
+          { isVerify: false },
+          { new: true },
+        );
+        return res.status(200).send(data);
+      }
+      console.log(id);
+      const data = await travelModel.findById(id);
+      console.log(data);
+      data.isVerify = true;
+      data.save();
+      res.status(200).send("verified");  
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
   async delete_travel(req, res) {
     try {
       const { travelId } = req.params;

@@ -144,6 +144,29 @@ module.exports = {
     return res.status(500).send(error);
    }
   },
+  async verify_evnt(req,res){
+    try {
+      const { id } = req.params;
+      const { suspend } = req.body;
+      if(suspend){
+        const data = await eventModel.findOneAndUpdate(
+          { _id: id },
+          { isverify: false },
+          { new: true },
+        );
+        return res.status(200).send(data);
+      }
+      console.log(id);
+      const data = await eventModel.findById(id);
+      console.log(data);
+      data.isverify = true;
+      data.save();
+      res.status(200).send("verified");  
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
+
   async find(req, res) {
     try {
       const { q } = req.query;

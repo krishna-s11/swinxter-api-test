@@ -26,6 +26,7 @@ router.get("/allevents", eventController.get_all_events);
 router.get("/get_event/:eventId", eventController.get_event);
 //delete particular event's particepent
 router.post("/delPart", eventController.delPart);
+router.post("/approve_event/:id", eventController.verify_evnt);
 
 router.put(
   "/update_event/:eventId",

@@ -17,6 +17,7 @@ router.post(
   ]),
   club.create_club,
 );
+router.put("/approve_club/:id", club.approve_club);
 router.put("/club_verify/:clubId", verifyAdmin, club.club_verify);
 router.delete("/delete_club/:clubId", club.delete_club);
 router.put(

@@ -89,7 +89,28 @@ module.exports = {
       return res.status(500).send(error);
     }
   },
-
+  async approve_club (req,res){ 
+    try {
+      const { id } = req.params;
+      const { suspend } = req.body;
+      if(suspend){
+        const data = await clubModel.findOneAndUpdate(
+          { _id: id },
+          { isverify: false },
+          { new: true },
+        );
+        return res.status(200).send(data);
+      }
+      console.log(id);
+      const data = await clubModel.findById(id);
+      console.log(data);
+      data.isverify = true;
+      data.save();
+      res.status(200).send("verified");  
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
   async delete_club(req, res) {
     const { clubId } = req.params;
     try {

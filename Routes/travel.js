@@ -21,7 +21,7 @@ router.post(
   verifyAdmin,
   travelController.travel_verify,
 );
-
+router.put("/approve_travel/:id", travelController.approve_travel)
 router.get("/search_travel", travelController.search_travel);
 router.get("/travel/:id", travelController.findOne);
 router.put(
