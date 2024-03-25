@@ -56,7 +56,7 @@ server.listen(PORT, () => {
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://swinxter-v2.vercel.app", "https://swinxter-admin.vercel.app"]
   },
 });
 
