@@ -16,6 +16,8 @@ const stream = require('getstream')
 const SECRET_KEY = process.env.JWT_SECRETKEY;
 const StreamChat = require('stream-chat').StreamChat
 const { generateToken04  } = require('../zego_server/zegoServerAssistant');
+const axios = require('axios');
+const { URLSearchParams } = require('url');
 
 module.exports = {
   async signup(req, res) {
@@ -1224,12 +1226,63 @@ module.exports = {
     return res.status(200).send("Emails sent successfully");
   },
   async add_subscription (req,res) {
-    const {name, ccnumber, expmm, expyy, email, userId} = req.body;
-    const existingUser = await User.findById(userId);
+    const {ccnumber, expmm, expyy, userId, amount, month_freq, day_of_month} = req.body;
+    const expiry = `${expmm}${expyy?.slice(-2)}`;
+
+    const today = new Date();
+    const today_date = today.getDate();
+
+    today.setDate(today.getDate() + 7);
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero based, so we add 1
+    const day = String(today.getDate()).padStart(2, '0');
+    const formattedDate = `${year}${month}${day}`;
+
+    const existingUser = await userModel.findById(userId);
+
     if(!existingUser){
       return res.status(404).send("User not found");
     }
-    
+    else{
+      const encodedParams = new URLSearchParams();
+      encodedParams.set('recurring', 'add_subscription');
+      encodedParams.set('ccnumber', ccnumber);
+      encodedParams.set('security_key', '6457Thfj624V5r7WUwc5v6a68Zsd6YEm');
+      encodedParams.set('payment', 'creditcard');
+      encodedParams.set('plan_payments', '0');
+      encodedParams.set('plan_amount', amount);
+      encodedParams.set('month_frequency', month_freq);
+      encodedParams.set('day_of_month', today_date);
+      encodedParams.set('start_date', formattedDate);
+      encodedParams.set('ccexp', expiry);
+      encodedParams.set('first_name', existingUser.username);
+      encodedParams.set('email', existingUser.email);
+      encodedParams.set('customer_receipt', 'true');
+      const options = {
+        method: 'POST',
+        url: 'https://secure.nmi.com/api/transact.php',
+        headers: {
+          accept: 'application/x-www-form-urlencoded',
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: encodedParams,
+      };
+
+      try {
+        const response = await axios.request(options);
+        const newToday = new Date();
+        const futureDate = new Date(newToday.getFullYear(), newToday.getMonth() + Number(month_freq), newToday.getDate());    
+        existingUser.payment.membership = true;
+        existingUser.payment.last_payment = new Date();
+        existingUser.payment.membership_plan = month_freq;
+        existingUser.payment.membership_expiry = futureDate;
+        existingUser.payment.membership_price = amount;
+        existingUser.save();
+        return res.status(200).send(response.data);
+      } catch (error) {
+        return res.status(500).send(error.message);
+      }
+    }
   },
 };
 

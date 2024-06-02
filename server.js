@@ -15,6 +15,7 @@ const clubroutes = require("./Routes/clubRoutes");
 const userroutes = require("./Routes/userRoutes");
 const event = require("./Routes/event");
 const travel = require("./Routes/travel");
+const affiliate = require("./Routes/affiliateRoutes");
 const faq = require("./Routes/faq");
 const adminRoutes = require("./Routes/adminRoutes");
 app.use(express.json());
@@ -25,7 +26,8 @@ var corsOptions = {
     "http://localhost:3002",
     "https://hot-date.vercel.app",
     "https://swinxter-v2.vercel.app",
-    "https://swinxter-admin.vercel.app"
+    "https://swinxter-admin.vercel.app",
+    "https://www.swinxter.com"
   ],
   credentials: true,
 };
@@ -40,6 +42,7 @@ app.use(
   travel,
   clubroutes,
   faq,
+  affiliate,
 );
 app.use("/admin",adminRoutes)
 db();
@@ -56,7 +59,7 @@ server.listen(PORT, () => {
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: ["http://localhost:3000", "https://swinxter-v2.vercel.app", "https://swinxter-admin.vercel.app"]
+    origin: ["http://localhost:3000","http://localhost:3001","https://swinxter-v2.vercel.app", "https://swinxter-admin.vercel.app"]
   },
 });
 

@@ -105,6 +105,7 @@ router.post("/unblockuser", userController.unblockUser);
 router.post("/superlike", userController.superlike);
 router.post("/notifications", userController.sendNotification);
 router.get("/notifications/:userId", userController.getNotifications);
+router.post("/create-subscription", userController.add_subscription);
 
 
 router.post("/send_dummy_emails", userController.sendDummyEmails);
